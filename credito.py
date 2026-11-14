@@ -154,8 +154,14 @@ if generar_archivo:
         X_input = pd.read_csv(archivo)
    
         
-        pred = predictor.predict(X_input)
+        #pred = predictor.predict(X_input)
+        
+        threshold = 0.40
+       
         probas = predictor.predict_proba(X_input)
+        prob_no_paga = probas[:, 1]
+        pred = (prob_no_paga >= threshold).astype(int)
+        
         st.markdown("---") 
          
     
@@ -263,9 +269,13 @@ if generar:
                        'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6', 'BILL_AMT1', 'BILL_AMT2',
                        'BILL_AMT3', 'BILL_AMT4', 'BILL_AMT5', 'BILL_AMT6', 'PAY_AMT1',
                        'PAY_AMT2', 'PAY_AMT3', 'PAY_AMT4', 'PAY_AMT5', 'PAY_AMT6'])
-        
-    pred = predictor.predict(X_random)
+    
+    threshold = 0.40
+   
     probas = predictor.predict_proba(X_random)
+    prob_no_paga = probas[:, 1]
+    pred = (prob_no_paga >= threshold).astype(int)
+                          
     st.markdown("---") 
         
     df_probas = pd.DataFrame(probas, columns=["Prob_Paga","Prob_NoPaga"])
